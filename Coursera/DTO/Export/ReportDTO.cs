@@ -2,6 +2,6 @@
 {
     public class ReportDTO
     {
-        public StudentDTO Student { get; set; }
+        public StudentDTO[] Students { get; set; }
     }
 }

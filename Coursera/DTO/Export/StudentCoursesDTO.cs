@@ -1,4 +1,6 @@
-﻿namespace Coursera.DTO.Export
+﻿using Coursera.Models;
+
+namespace Coursera.DTO.Export
 {
     public class StudentCoursesDTO
     {
@@ -9,6 +11,6 @@
         public int Credit { get; set; }
 
         // Instructor name
-        public InstructorDTO InstructorName { get; set; }
+        public string InstructorName { get; set; }
     }
 }

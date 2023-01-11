@@ -1,5 +1,6 @@
 ﻿using Coursera.Data;
 using Coursera.DTO.Export;
+using System.Net;
 
 public class Program
 {
@@ -8,28 +9,26 @@ public class Program
     private static void Main(string[] args)
     {
         var db = new CourseraContext();
+        GetAllStudentsWithCourses(db);
     }
 
     public static void GetAllStudentsWithCourses(CourseraContext context)
     {
-        var studentsWithCourses = new ReportDTO()
+        var students = new ReportDTO()
         {
-            Student = (StudentDTO)context.Students.Select(s => new StudentDTO
+            Students = context.Students.ToArray().Select(s => new StudentDTO()
             {
-                FirstName = s.FirstName,
-                LastName = s.LastName,
-                TotalCredit = context.StudentCourses.Where(c => c.PIN == s.PIN).Sum(sc => sc.Course.Credit),
-                StudentsCourses = s.StudentCourses.Select(c => new StudentCoursesDTO
+                StudentName = $"{s.First_Name} {s.Last_Name}",
+                TotalCredit = s.StudentCourses.Where(c => c.PIN == s.PIN).Sum(cr => cr.Course.Credit),
+                StudentsCourses = context.StudentCourses.Where(c => c.PIN == s.PIN).Select(co => new StudentCoursesDTO()
                 {
-                    Name = c.Course.Name,
-                    TotalTime = c.Course.TotalTime,
-                    Credit = c.Course.Credit,
-                    InstructorName = (InstructorDTO)context.Instructors.Select(i => new InstructorDTO
-                    {
-                        InstructorName = $"{i.FirstName} {i.LastName}",
-                    })
+                    Name = co.Course.Name,
+                    TotalTime = co.Course.TotalTime,
+                    Credit = co.Course.Credit,
+                    InstructorName = $"{context.Instructors.Where(i => i.Id == co.Course.Instructor_Id).Select(n => n.First_Name)} {context.Instructors.Where(i => i.Id == co.Course.Instructor_Id).Select(n => n.Last_Name)}"
                 }).ToArray()
-            })
+            }).ToArray()
         };
+        
     }
 }

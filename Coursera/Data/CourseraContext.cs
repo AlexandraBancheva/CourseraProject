@@ -22,7 +22,7 @@ namespace Coursera.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=.;Database=coursera;Integrated Security=True");
+                optionsBuilder.UseSqlServer(@"Server=.;Database=coursera;Trusted_Connection=True;TrustServerCertificate=True;");
             }
         }
 
